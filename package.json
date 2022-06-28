@@ -1,0 +1,24 @@
+{
+  "name": "mini-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build",
+    "start": "vite preview --port 8080",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ApurvaP-10/project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ApurvaP-10/project/issues"
+  },
+  "homepage": "https://github.com/ApurvaP-10/project#readme",
+  "dependencies": {
+    "vite": "^2.9.13"
+  }
+}
