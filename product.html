@@ -1,51 +1,3 @@
-<<<<<<< HEAD
-<!doctype html>
-<!-- If multi-language site, reconsider usage of html lang declaration here. -->
-<html lang="en"> 
-
-<head>
-  <meta charset="utf-8">
-  <title>Client</title>
-  <!-- View-port Basics: http://mzl.la/VYREaP -->
-  <!-- This meta tag is used for mobile device to display the page without any zooming,
-       so how much the device is able to fit on the screen is what's shown initially. 
-       Remove comments from this tag, when you want to apply media queries to the website. -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <!-- Place favicon.ico in the root directory: mathiasbynens.be/notes/touch-icons -->
-  <link rel="shortcut icon" href="favicon.ico" />
-  <!--font-awesome link for icons-->
-  <link rel="stylesheet" media="screen" href="assets/vendor/font-awesome/css/all.min.css" >
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- Default style-sheet is for 'media' type screen (color computer display).  -->
-  <link rel="stylesheet" media="screen" href="assets/css/style.css" >
-</head>
-
-<body>
-  <!--container start-->
-  <div class="container">
-    <!--header section start-->
-    <header>
-      
-    </header>
-    <!--header section start-->
-    <!--main section start-->
-    <main>
-
-    </main>
-    <!--main section end-->
-
-    <!--footer section start-->
-    <footer>      
-
-    </footer>
-    <!--footer section end-->
-
-  </div>
-  <!--container end-->
-  <script src="assets/js/script.js"></script>
-</body>
-</html>
-=======
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <title>Shopping Website</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -61,16 +12,14 @@
     <link rel="stylesheet" href="./css/footer.css">
     <link rel="stylesheet" href="./css/newsletter.css">
     <link rel="stylesheet" href="./css/card.css">
+    <link rel="stylesheet" href="./css/productdetail.css">
     <link rel="stylesheet" href="./css/cart.css">
     <link rel="stylesheet" href="./css/common.css">
-    <link rel="stylesheet" href="./css/homepage.css">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
     <script defer type="module" src="./js/index.js"></script>
-    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
-
 </head>
 
-<body class="home-page">
+<body class="product-page">
     <header id="header">
         <div class="wrapper">
             <a href="index.html"><img src="./img/logo.png" class="logo" alt=""></a>
@@ -126,99 +75,135 @@
         </div>
     </header>
 
-    <section id="hero">
-
+    <section id="prodetails" class="section-p1">
         <div class="wrapper">
-            <div class="hero-details">
-                <h4 style="font-size:40px;">Trande-in-offer</h4>
-                <h2 style="font-size:40px;">Supper value deals</h2>
-                <h1 style="font-size:40px;">On the product</h1>
-                <p>Save more with coupons & up to 70% off!</p>
-                <a href="./shop.html" title="shop now">Shop Now</a>
-            </div>
-            <a href="#"><img src="./img/hero7.jpg" alt=""></a>
-        </div>
-    </section>
+            <div class="single-pro-image">
+                <img src="./img/products/f1.jpg" id="MainImg" alt="">
 
-    <section id="feature" class="section-p1">
-        <div class="wrapper">
-            <div class="fe-box">
-                <img src="./img/features/f1.png" alt="">
-                <h6>Free Shopping</h6>
+                <div class="small-img-group">
+                    <div class="small-img-col">
+                        <img src="./img/products/f1.jpg" id="main-first-image" class="small-img" alt="">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="./img/products/f2.jpg" class="small-img" alt="">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="./img/products/f3.jpg" class="small-img" alt="">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="./img/products/f4.jpg" class="small-img" alt="">
+                    </div>
+                </div>
             </div>
-            <div class="fe-box">
-                <img src="./img/features/f2.png" alt="">
-                <h6>Online Order</h6>
+            <div class="single-pro-details">
+                <form class="product-form" action="#" method="POST" enctype="multipart/form-data">
+                    <h2 class="title">Men's Fashion T-Shirt</h2>
+                    <h3 class="brand">adidas</h3>
+                    <h2 class="price">₹ <span id="price">299</span></h2>
+                    <h6>Home /T-Shirt</h6>
+                    <select class="size">
+                        <option>Select Size</option>
+                        <option selected>Small</option>
+                        <option>Medium</option>
+                        <option>Large</option>
+                        <option>XL</option>
+                        <option>XXL</option>
+                    </select>
+                    <input type="number" class="quantity" min="1" value="1">
+                    <button type="submit" class="add-to-cart normal">Add To Cart</button>
+                </form>
+                <h2>product details</h2>
+                <span>The Gildan Ultra Cotton T-Shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed
+                    from 100% cotton,this classic fit preeshrunk jersey knit provides unmatched comfort with each wear.
+                    Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range
+                    of colors, it all in the ultimate head-turning package.</span>
             </div>
-            <div class="fe-box">
-                <img src="./img/features/f3.png" alt="">
-                <h6>Save Money</h6>
-            </div>
-            <div class="fe-box">
-                <img src="./img/features/f4.png" alt="">
-                <h6>Promotions</h6>
-            </div>
-            <div class="fe-box">
-                <img src="./img/features/f5.png" alt="">
-                <h6>Happy Sell</h6>
-            </div>
-            <div class="fe-box">
-                <img src="./img/features/f6.png" alt="">
-                <h6>f24/7 Support</h6>
-            </div>
-
         </div>
     </section>
 
     <section id="Product1" class="section-p1">
         <div class="wrapper">
-            <h2 style="font-size:40px;">Featured Products</h2>
-            <p>Summer Collection New Modern Design</p>
-            <div class="pro-container"></div>
+            <h2>&ensp;</h2>
+            <h1>Similar Products</h1>
+            <p>Customers who viewed this item also viewed</p>
+            <div class="pro-container">
+                <div class="pro">
+                    <img src="./img/products/n1.jpg" alt="">
+                    <div class="card-details">
+                        <div class="des">
+                            <span>adidas</span>
+                            <h5>Cartoon Astronaut T-Shirts</h5>
+                            <div class="star">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h4>₹ 500</h4>
+                        </div>
+                        <a href="#"><i class='fas fa-cart-arrow-down'></i></a>
+                    </div>
+                </div>
+                <div class="pro">
+                    <img src="./img/products/n2.jpg" alt="">
+                    <div class="card-details">
+                        <div class="des">
+                            <span>adidas</span>
+                            <h5>Cartoon Astronaut T-Shirts</h5>
+                            <div class="star">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h4>₹ 500</h4>
+                        </div>
+                        <a href="#"><i class='fas fa-cart-arrow-down'></i></a>
+                    </div>
+                </div>
+                <div class="pro">
+                    <img src="./img/products/n3.jpg" alt="">
+                    <div class="card-details">
+                        <div class="des">
+                            <span>adidas</span>
+                            <h5>Cartoon Astronaut T-Shirts</h5>
+                            <div class="star">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h4>₹ 299</h4>
+                        </div>
+                        <a href="#"><i class='fas fa-cart-arrow-down'></i></a>
+                    </div>
+                </div>
+
+                <div class="pro">
+                    <img src="./img/products/n4.jpg" alt="">
+                    <div class="card-details">
+                        <div class="des">
+                            <span>adidas</span>
+                            <h5>Cartoon Astronaut T-Shirts</h5>
+                            <div class="star">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h4>₹ 650</h4>
+                        </div>
+                        <a href="#"><i class='fas fa-cart-arrow-down'></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="banner" class="section-m1">
-        <div class="wrapper">
-            <h4>Repair Services</h4>
-            <h2>Up to <span>70% off</span> All T-Shirts and Accessories</h2>
-            <a href="./shop.html" title="Explore More" class="normal">Explore More</a>
-        </div>
-    </section>
-
-    <section id="sm-banner" class="section-p1">
-        <div class="wrapper">
-            <div class="banner-box">
-                <h4 style="color:white; font-size:20px;">crazy deals</h4>
-                <h2 style="color:white; font-size:40px;">buy 1 get 1 free</h2>
-                <span style="color:white;">The best classic dress is on sale at Shopy</span>
-                <a href="./contact.html" title="Learn More" class="white">Learn More</a>
-            </div>
-            <div class="banner-box banner-box2">
-                <h4 style="color:white; font-size:20px;">Spring/Summer</h4>
-                <h2 style="color:white; font-size:40px;">upcoming season</h2>
-                <span style="color:white;">The best classic dress is on sale at Shopy</span>
-                <a href="./shop.html" title="Collection" class="white">Collection</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="banner3">
-        <div class="wrapper">
-            <div class="banner-box ">
-                <h2>SEASONAL SALE</h2>
-                <h3>Winter Collection -50% off</h3>
-            </div>
-            <div class="banner-box banner-box2">
-                <h2>NEW FOOTWEAR COLLECTION</h2>
-                <h3>Spring/Summer 2022</h3>
-            </div>
-            <div class="banner-box banner-box3">
-                <h2>T-SHIRTS</h2>
-                <h3>New Trendy Prints</h3>
-            </div>
-        </div>
-    </section>
 
     <section id="newsletter" class="section-p1 section-m1">
         <div class="wrapper">
@@ -286,4 +271,3 @@
 </body>
 
 </html>
->>>>>>> 7bccdc9 (feat: database queries are implemented)

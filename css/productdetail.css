@@ -1,0 +1,84 @@
+.section-p1 {
+    padding: 40px 40px;
+}
+
+#prodetails .wrapper {
+    display: flex;
+    margin-top: 20px;
+}
+
+#prodetails .single-pro-image {
+    width: 35%;
+    margin-right: 50px;
+}
+
+.small-img-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.small-img-col {
+    flex-basis: 24%;
+}
+
+#prodetails .single-pro-details {
+    width: 50%;
+    padding-top: 30px;
+}
+
+#prodetails .single-pro-details h4 {
+    width: 25%;
+    padding: 60px 0 40px 0;
+}
+
+#prodetails .single-pro-details h2 {
+    font-size: 26px;
+    margin: 20px 0;
+}
+
+#prodetails .single-pro-details select {
+    display: block;
+    padding: 5px 10px;
+    margin: 20px 0;
+}
+
+#prodetails .single-pro-details input {
+    width: 40px;
+    height: 27px;
+    padding-left: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+#prodetails .single-pro-details input:focus {
+    outline: none;
+}
+
+#prodetails .single-pro-details button {
+    padding: 10px 2%;
+    background: #088178;
+    color: #fff;
+    border: 1px solid;
+}
+
+#prodetails .single-pro-details button:hover {
+    background: #fff;
+    color: #088178;
+}
+
+#prodetails .single-pro-details span {
+    line-height: 1.5;
+}
+
+.small-img-group {
+    margin: 20px 0;
+}
+
+.section-p1 h1 {
+    font-size: 40px;
+    margin: 20px 0;
+}
+
+.section-p1 p {
+    font-size: 20px;
+}

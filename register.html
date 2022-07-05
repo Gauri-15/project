@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - register</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/cart.css">
+    <link rel="stylesheet" href="./css/footer.css">
+    <link rel="stylesheet" href="./css/form.css">
+</head>
+
+<body>
+    <header id="header">
+        <div class="wrapper">
+            <a href="index.html"><img src="./img/logo.png" class="logo" alt=""></a>
+            <div>
+                <ul id="navbar">
+                    <li><a class="active" href="index.html">Home</a></li>
+                    <li><a href="./shop.html">Shop</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                    <li id="lg-bag"><a href="./cart.html"></a>
+                        <i class="fa fa-shopping-bag" style="font-size:24px"></i>
+                        <sup class="cart-quantity">0</sup>
+                    </li>
+                </ul>
+                <div class="cart d-none" id="cart">
+                    <div class="inner-cart">
+
+                        <!-- Cart Header -->
+                        <div class="cart-header" id="cart-header">
+                            <div>
+                                <h2 class="d-inline">My Cart</h2>
+                                <span>(<span class="cart-quantity">0</span> item)</span>
+                            </div>
+                            <i class="fa-solid fas fa-times"></i>
+                        </div>
+
+                        <!-- Cart Body -->
+                        <ul class="cart-body" id="cart-body"></ul>
+
+                        <!-- Cart Footer -->
+                        <div class="cart-footer" id="cart-footer">
+                            <p>Promo Code can be applied on payment page</p>
+                            <div class="checkout" id="checkout">
+                                <i>Proceed to Checkout</i>
+                                <span>Rs.<span class="total-price" id="total-price">0</span> <i
+                                        class="fa-solid fas fa-angle-right"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="auth">
+                <ul>
+                    <li><a title="logout" href="/logout">logout</a></li>
+                    <li><a title="login" href="./login.html">login</a></li>
+                </ul>
+            </div>
+            <div class="mobile">
+                <i class="close fas fa-times"></i>
+                <a href="./cart.html"><i class="fa-solid fa-bag-shopping"></i></a>
+                <i id="bar" class="fas fa-outdent"></i>
+            </div>
+            <div class="backdrop d-none" id="backdrop"></div>
+        </div>
+    </header>
+
+    <main>
+        <div class="wrapper">
+            <div class="form-details">
+                <h2>Signup</h2>
+                <p>We do not share your personal details with anyone.</p>
+            </div>
+            <div class="register-form">
+                <form method="post" class="register" id='register-form'>
+                    <div class='form-group'>
+                        <div class="form-input">
+                            <input type="text" id="user_name" name="user_name" />
+                            <label for="user_name" class="label-name"><span class="content-name">user
+                                    name</span></label>
+                        </div>
+                        <span class="note">please enter a valid email !</span>
+                    </div>
+                    <div class='form-group'>
+                        <div class="form-input">
+                            <input type="email" id="email" name="email" />
+                            <label for="email" class="label-name"><span class="content-name">email</span></label>
+                        </div>
+                        <span class="note">please enter a valid email !</span>
+                    </div>
+                    <div class='form-group'>
+                        <div class="form-input">
+                            <input type="password" id="password" name="password" />
+                            <label for="password" class="label-name"><span class="content-name">password</span></label>
+                        </div>
+                        <span class="note">please enter a valid password !</span>
+                    </div>
+                    <div class='form-group'>
+                        <div class="form-input">
+                            <input type="password" id="confirm_password" name="confirm_password" />
+                            <label for="confirm_password" class="label-name"><span class="content-name">confirm
+                                    password</span></label>
+                        </div>
+                        <span class="note">please enter a valid confirm password !</span>
+                    </div>
+                    <button type="submit" class="formBtn">sign up</button>
+                </form>
+                <div class="not-logged-in">
+                    <p>Already a User? Login Here</p>
+                    <a href="./login.html" class="formBtn" title="login">login</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="section-p1">
+        <div class="wrapper">
+            <div class="col">
+                <h4 style="font-size:20px;">Contact</h4>
+                <p> <strong>Address:</strong>Amravati </p>
+                <p> <strong>Phone:</strong> (+91)9665029524</p>
+                <p> <strong>Hours:</strong> 9:00am-10:00pm</p>
+                <div class=" follow">
+                    <h4 style="font-size:20px;">follow us</h4>
+                    <div class="icon">
+                        <i class="fab fa-facebook-f"></i>
+                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-pinterest-p"></i>
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <h4 style="font-size:20px;">About</h4>
+                <a href="#">About us</a>
+                <a href="#">Delivery Information</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <div class="col">
+                <h4 style="font-size:20px;">My Account</h4>
+                <a href="#">Sign In</a>
+                <a href="#">View Cart</a>
+                <a href="#">My Wishlist</a>
+                <a href="#">Track My Order</a>
+                <a href="#">Help</a>
+            </div>
+            <div class="col install">
+                <h4 style="font-size:20px;">Install App</h4>
+                <p>From App or Google Play</p>
+                <div class="row">
+                    <img src="./img/pay/app.jpg" alt="">
+                    <img src="./img/pay/play.jpg" alt="">
+                </div>
+                <p>Secured Payment Gateways</p>
+                <img src="./img/pay/pay.png" alt="">
+            </div>
+            <div class="copyright">
+                <p>2022 HTML CSS Ecommerce Template</p>
+            </div>
+        </div>
+    </footer>
+</body>
+<script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+<script src="./js/index.js"></script>
+<script type="module" src="./js/form.js"></script>
+
+</html>
