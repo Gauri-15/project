@@ -64,6 +64,15 @@
     cursor: pointer;
 }
 
+#user_name {
+    position: absolute;
+    right: 20%;
+    top: 55px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: monospace;
+}
+
 .auth {
     position: absolute;
     width: 14%;

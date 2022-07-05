@@ -41,13 +41,11 @@ app.get('/users', function (req, res) {
 // Retrieve user with param 
 app.get('/user/:email', function (req, res) {
     let email = req.params.email;
-    console.log(email);
     if (!email) {
         return res.status(400).send({ error: true, message: 'Please provide user params' });
     }
     if (email) {
         dbConn.query(`SELECT * FROM users where email="${email}"`, function (error, results, fields) {
-            console.log(error, results, fields);
             if (error) return res.send({ error_code: error.code, error_message: error.message, error_query: error.sql });
             return res.send({ error: false, data: results, message: 'users list.' });
         });
@@ -69,9 +67,48 @@ app.post('/user', async function (req, res) {
     });
 });
 
+// login a user  
+app.post('/login', async function (req, res) {
+    let email = req.body.email;
+    let password = req.body.password;
+    // generate salt to hash password
+    let hashedPass = cyrb53(password).toString();
+
+    if (!email) {
+        return res.status(400).send({ error: true, message: 'Please provide user data' });
+    }
+    if (email) {
+        dbConn.query(`SELECT * FROM users where email="${email}"`, function (error, results, fields) {
+            if (results.length > 0) {
+                if (results[0].email === email) {
+                    if (results[0].password === hashedPass) {
+                        return res.send({ error: false, data: results[0], login: 'yes', message: 'user login successful' });
+                    } else {
+                        return res.status(400).send({ error: true, errorType: 'login_password_error' });
+                    }
+                } else {
+                    return res.status(400).send({ error: true, errorType: 'login_email_error' });
+                }
+            } else {
+                return res.status(400).send({ error: true, errorType: 'login_email_error' });
+            }
+            if (error) return res.send({ error_code: error.code, error_message: error.message, error_query: error.sql });
+        });
+    }
+});
+
+// update login status
+app.put('/login_status', async function (req, res) {
+    let email = req.body.email;
+    dbConn.query(`UPDATE users SET is_logged_in=true WHERE users.email="${email}"`, function (errorMsg, resultData) {
+        if (errorMsg) return res.send({ error_code: errorMsg.code, error_message: errorMsg.message, error_query: errorMsg.sql });
+        return res.send({ error: false, data: resultData[0], message: 'user login successful' });
+    });
+});
+
 //  Update user with id
 app.put('/user', function (req, res) {
-    let user_id = req.body.user_id;
+    let user_id = req.body.id;
     let user = req.body.user;
     if (!user_id || !user) {
         return res.status(400).send({ error: user, message: 'Please provide user and user_id' });

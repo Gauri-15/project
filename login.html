@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart - Signin</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/cart.css">
@@ -30,7 +31,7 @@
                 </ul>
                 <div class="cart d-none" id="cart">
                     <div class="inner-cart">
-
+    
                         <!-- Cart Header -->
                         <div class="cart-header" id="cart-header">
                             <div>
@@ -39,10 +40,10 @@
                             </div>
                             <i class="fa-solid fas fa-times"></i>
                         </div>
-
+    
                         <!-- Cart Body -->
                         <ul class="cart-body" id="cart-body"></ul>
-
+    
                         <!-- Cart Footer -->
                         <div class="cart-footer" id="cart-footer">
                             <p>Promo Code can be applied on payment page</p>
@@ -55,10 +56,13 @@
                     </div>
                 </div>
             </div>
+            <div id="user_name">
+                <p>Hi <span id="user_email"></span></p>
+            </div>
             <div class="auth">
                 <ul>
-                    <li><a title="logout" href="/logout">logout</a></li>
-                    <li><a title="login" href="./login.html">login</a></li>
+                    <li id="logout_link"><a title="logout" href="/logout">logout</a></li>
+                    <li id="login_link"><a title="login" href="./login.html">login</a></li>
                 </ul>
             </div>
             <div class="mobile">
@@ -153,6 +157,7 @@
     </footer>
 </body>
 <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="./js/index.js"></script>
 <script type="module" src="./js/form.js"></script>
 

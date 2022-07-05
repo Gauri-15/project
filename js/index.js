@@ -4,6 +4,10 @@ const bar = document.getElementById('bar');
 const nav = document.getElementById('navbar');
 const html = document.querySelector('html');
 const body = document.querySelector('body');
+const login_link = document.querySelector('#login_link');
+const logout_link = document.querySelector('#logout_link');
+const user_name_element = document.querySelector('#user_name');
+const user_email_element = document.querySelector('#user_email');
 const authContainer = document.querySelector('.auth');
 const cardContainer = document.querySelector('.pro-container');
 const singleProImage = document.querySelector('.single-pro-image');
@@ -175,11 +179,29 @@ const onload = () => {
             fetchProductById(product_id, singleProImage, singleProDetails);
         }
         displayCartItems();
+        if (sessionStorage.length > 0) {
+            const user = JSON.parse(sessionStorage.getItem('user_data'));
+            if (user) {
+                user_name_element.classList.remove('d-none');
+                user_email_element.innerText = user.email;
+                login_link.classList.add('d-none');
+            }
+        } else {
+            user_name_element.classList.add('d-none');
+            logout_link.classList.add('d-none');
+        }
     };
     window.onload();
 }
 
 onload();
+
+// auth redirection 
+logout_link.addEventListener('click', (e) => {
+    user_name_element.classList.add('d-none');
+    login_link.classList.remove('d-none');
+    sessionStorage.clear();
+})
 
 // active navigation slide menu logic
 if (bar) {
@@ -259,6 +281,7 @@ setTimeout(() => {
         })
     })
 }, 5000);
+
 // cart functionality
 const addToCartBtn = document.querySelector('.add-to-cart');
 
@@ -303,3 +326,23 @@ if (addToCartBtn) {
         }
     })
 };
+
+// checkout functionality 
+if (checkout) {
+    checkout.addEventListener('click', (e) => {
+
+        const cartData = JSON.parse(localStorage.getItem('cartData'));
+        Toastify({
+            text: "Your Product has been added to cart successfully",
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "#56b43a",
+            },
+        }).showToast();
+    })
+}
