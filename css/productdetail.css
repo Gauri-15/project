@@ -33,12 +33,13 @@
 
 #prodetails .single-pro-details h2 {
     font-size: 26px;
+    margin: 20px 0;
 }
 
 #prodetails .single-pro-details select {
     display: block;
     padding: 5px 10px;
-    margin-bottom: 10px;
+    margin: 20px 0;
 }
 
 #prodetails .single-pro-details input {
@@ -54,16 +55,30 @@
 }
 
 #prodetails .single-pro-details button {
-    height: 37px;
-    width: 150px;
+    padding: 10px 2%;
     background: #088178;
     color: #fff;
+    border: 1px solid;
+}
+
+#prodetails .single-pro-details button:hover {
+    background: #fff;
+    color: #088178;
 }
 
 #prodetails .single-pro-details span {
-    line-height: 50px;
+    line-height: 1.5;
 }
 
 .small-img-group {
     margin: 20px 0;
+}
+
+.section-p1 h1 {
+    font-size: 40px;
+    margin: 20px 0;
+}
+
+.section-p1 p {
+    font-size: 20px;
 }

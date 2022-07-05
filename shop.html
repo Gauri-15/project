@@ -8,30 +8,63 @@
   <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
   <title>Shopping Website</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" href="./css/header.css">
   <link rel="stylesheet" href="./css/footer.css">
   <link rel="stylesheet" href="./css/newsletter.css">
+  <link rel="stylesheet" href="./css/cart.css">
   <link rel="stylesheet" href="./css/card.css">
   <link rel="stylesheet" href="./css/shop.css">
   <link rel="stylesheet" href="./css/common.css">
   <link rel="stylesheet" href="style.css">
-  <script defer src="./js/index.js"></script>
+  <script defer type="module" src="./js/index.js"></script>
 </head>
 
 <body class="shop-page">
   <header id="header">
     <div class="wrapper">
-      <a href="#"><img src="./img/logo.png" class="logo" alt=""></a>
+      <a href="index.html"><img src="./img/logo.png" class="logo" alt=""></a>
       <div>
         <ul id="navbar">
           <li><a class="active" href="index.html">Home</a></li>
           <li><a href="./shop.html">Shop</a></li>
-          <li><a href="./blog.html">Blog</a></li>
-          <li><a href="./about.html">About</a></li>
           <li><a href="./contact.html">Contact</a></li>
           <li id="lg-bag"><a href="./cart.html"></a>
             <i class="fa fa-shopping-bag" style="font-size:24px"></i>
+            <sup class="cart-quantity">0</sup>
           </li>
+        </ul>
+        <div class="cart d-none" id="cart">
+          <div class="inner-cart">
+
+            <!-- Cart Header -->
+            <div class="cart-header" id="cart-header">
+              <div>
+                <h2 class="d-inline">My Cart</h2>
+                <span>(<span class="cart-quantity">0</span> item)</span>
+              </div>
+              <i class="fa-solid fas fa-times"></i>
+            </div>
+
+            <!-- Cart Body -->
+            <ul class="cart-body" id="cart-body"></ul>
+
+            <!-- Cart Footer -->
+            <div class="cart-footer" id="cart-footer">
+              <p>Promo Code can be applied on payment page</p>
+              <div class="checkout" id="checkout">
+                <i>Proceed to Checkout</i>
+                <span>Rs.<span class="total-price" id="total-price">0</span> <i
+                    class="fa-solid fas fa-angle-right"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="auth">
+        <ul>
+          <li><a title="logout" href="/logout">logout</a></li>
+          <li><a title="login" href="./login.html">login</a></li>
         </ul>
       </div>
       <div class="mobile">
@@ -39,6 +72,7 @@
         <a href="./cart.html"><i class="fa-solid fa-bag-shopping"></i></a>
         <i id="bar" class="fas fa-outdent"></i>
       </div>
+      <div class="backdrop d-none" id="backdrop"></div>
     </div>
   </header>
 
@@ -373,10 +407,10 @@
         <h4>Sign Up For Newsletters</h4>
         <p>Get E-mails update about our latest shop and <span>Special Offer.</span></p>
       </div>
-      <div class="form">
-        <input type="text" placeholder="your email address">
-        <button>Sing Up</button>
-      </div>
+      <form class="form">
+        <input type="email" required placeholder="your email address">
+        <button type='submit'>submit</button>
+      </form>
     </div>
   </section>
 
@@ -429,6 +463,7 @@
       </div>
     </div>
   </footer>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 
 </html>

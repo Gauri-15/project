@@ -55,6 +55,11 @@
 
 }
 
+#lg-bag,
+.fa-times {
+    cursor: pointer;
+}
+
 .mobile {
     cursor: pointer;
 }
@@ -63,7 +68,7 @@
     position: absolute;
     width: 14%;
     right: 0;
-    top: 80px;
+    top: 124px;
     padding: 15px 1%;
     background: #fce1bd;
 }
@@ -135,6 +140,6 @@
 
     #lg-bag {
         display: none;
-
+        cursor: pointer;
     }
 }

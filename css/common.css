@@ -104,7 +104,7 @@ footer, header, hgroup, menu, nav, section {
 }
 
 /* Force scrollbar 
-html { overflow-y: scroll; }
+
 
 /* Align radios and text inputs with their label 
 
@@ -165,11 +165,10 @@ li {
   list-style-type: none;
 }
 
-
-
-/*=================================
-  Header styling starts here
-=================================*/
+*/
+html {
+  overflow-x: hidden;
+}
 
 img {
   width: 100%;
@@ -184,7 +183,8 @@ img {
   margin: 0 auto;
 }
 
-button.normal {
+button.normal,
+a.normal {
   font-size: 14px;
   font-weight: 600;
   padding: 15px 30px;
@@ -197,7 +197,8 @@ button.normal {
   transition: 0.2s;
 }
 
-button.white {
+button.white,
+a.white {
   font-size: 13px;
   font-weight: 600;
   padding: 11px 3%;
@@ -210,7 +211,7 @@ button.white {
   transition: 0.2s;
 }
 
-button.white:hover {
+a.white:hover {
   color: black;
   background-color: white;
 }
@@ -239,6 +240,14 @@ section {
   display: none;
 }
 
+.overflow-hide {
+  overflow: hidden;
+}
+
+#Product1 .pro .des i.rated {
+  color: rgb(243, 181, 25);
+}
+
 #header.inverted {
   background-color: #fff;
   box-shadow: 0 3px 5px 0.3px rgba(0, 0, 0, 0.1);
@@ -261,20 +270,20 @@ section {
  */
 @-webkit-keyframes slide-left {
   0% {
-    right: -50px;
+    transform: translateX(180px);
   }
 
   100% {
-    right: 0px;
+    transform: translateX(0px);
   }
 }
 
 @keyframes slide-left {
   0% {
-    right: -100px;
+    transform: translateX(180px);
   }
 
   100% {
-    right: 0px;
+    transform: translateX(0px);
   }
 }

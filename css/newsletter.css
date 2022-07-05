@@ -37,6 +37,7 @@
 #newsletter .form {
     display: flex;
     width: 40%;
+    position: relative;
 }
 
 #newsletter input {
@@ -53,10 +54,17 @@
 }
 
 #newsletter button {
-    background-color: #088178;
     padding: 0 3%;
+    background-color: #088178;
     color: #fff;
     white-space: nowrap;
+    border: 1px solid #088178;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    cursor: pointer;
+}
+
+#newsletter button:hover {
+    background-color: #fff;
+    color: #088178;
 }
