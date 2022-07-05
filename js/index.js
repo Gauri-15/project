@@ -327,22 +327,54 @@ if (addToCartBtn) {
     })
 };
 
+/**
+   navigate : Function used to navigate to thank you page on form submit.
+*/
+const navigate = (navigateTo) => {
+    window.location.href = `${window.location.origin}/${navigateTo}.html`;
+};
+
 // checkout functionality 
 if (checkout) {
     checkout.addEventListener('click', (e) => {
-
-        const cartData = JSON.parse(localStorage.getItem('cartData'));
-        Toastify({
-            text: "Your Product has been added to cart successfully",
-            duration: 3000,
-            newWindow: true,
-            close: true,
-            gravity: "top", // `top` or `bottom`
-            position: "center", // `left`, `center` or `right`
-            stopOnFocus: true, // Prevents dismissing of toast on hover
-            style: {
-                background: "#56b43a",
-            },
-        }).showToast();
+        if (sessionStorage.length > 0) {
+            cart.classList.toggle('d-none');
+            backdrop.classList.toggle('d-none');
+            html.classList.remove('overflow-hide');
+            cart.classList.remove('slide-left');
+            // localStorage.clear();
+            const cartData = JSON.parse(localStorage.getItem('cartData'));
+            Toastify({
+                text: "Your Order has been placed successfully",
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "#56b43a",
+                },
+            }).showToast();
+            setTimeout(() => {
+                navigate('index');
+            }, 1000);
+        } else {
+            Toastify({
+                text: "Please Login to proceed !",
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "#d22744",
+                },
+            }).showToast();
+            setTimeout(() => {
+                navigate('login');
+            }, 1000);
+        }
     })
 }

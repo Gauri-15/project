@@ -224,8 +224,6 @@ const onSubmitLoginForm = async (e, inputFields, errorSpans) => {
 
     return (isValid && userStatus.is_logged_in);
 }
-
-
 /**
    navigate : Function used to navigate to thank you page on form submit.
 */
