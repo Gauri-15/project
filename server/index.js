@@ -100,37 +100,12 @@ app.post('/login', async function (req, res) {
 // update login status
 app.put('/login_status', async function (req, res) {
     let email = req.body.email;
-    dbConn.query(`UPDATE users SET is_logged_in=true WHERE users.email="${email}"`, function (errorMsg, resultData) {
+    let isLoggedIn = req.body.is_logged_in;
+    dbConn.query(`UPDATE users SET is_logged_in=${isLoggedIn} WHERE users.email="${email}"`, function (errorMsg, resultData) {
         if (errorMsg) return res.send({ error_code: errorMsg.code, error_message: errorMsg.message, error_query: errorMsg.sql });
         return res.send({ error: false, data: resultData[0], message: 'user login successful' });
     });
 });
-
-//  Update user with id
-app.put('/user', function (req, res) {
-    let user_id = req.body.id;
-    let user = req.body.user;
-    if (!user_id || !user) {
-        return res.status(400).send({ error: user, message: 'Please provide user and user_id' });
-    }
-    dbConn.query("UPDATE users SET user = ? WHERE id = ?", [user, user_id], function (error, results, fields) {
-        if (error) return res.send({ error_code: error.code, error_message: error.message, error_query: error.sql });
-        return res.send({ error: false, data: results, message: 'user has been updated successfully.' });
-    });
-});
-
-//  Delete user
-app.delete('/user', function (req, res) {
-    let user_id = req.body.user_id;
-    if (!user_id) {
-        return res.status(400).send({ error: true, message: 'Please provide user_id' });
-    }
-    dbConn.query('DELETE FROM users WHERE id = ?', [user_id], function (error, results, fields) {
-        if (error) return res.send({ error_code: error.code, error_message: error.message, error_query: error.sql });
-        return res.send({ error: false, data: results, message: 'User has been updated successfully.' });
-    });
-});
-
 
 // PRODUCTS API's 
 // retrieve all products
@@ -141,11 +116,25 @@ app.get('/products', function (req, res) {
     });
 });
 
+// retrieve products on basis of ID
 app.get('/product/:id', function (req, res) {
     const id = req.params.id;
     dbConn.query(`SELECT * FROM products WHERE id =${id}`, function (error, results, fields) {
         if (error) return res.send({ error_code: error.code, error_message: error.message, error_query: error.sql });
         return res.send({ error: false, data: results, message: 'users list.' });
+    });
+});
+
+// Checkout Api
+app.put('/user_product', function (req, res) {
+    console.log(req.body)
+    let data = req.body.data;
+    if (!data) {
+        return res.status(400).send({ error: data, message: 'Please provide user and user_id' });
+    }
+    dbConn.query("INSERT INTO user_products SET ? ", { ...data }, function (error, results, fields) {
+        if (error) return res.send({ error_code: error.code, error_message: error.message, error_query: error.sql });
+        return res.send({ error: false, data: results, message: 'user has been updated successfully.' });
     });
 });
 

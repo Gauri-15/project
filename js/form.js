@@ -131,13 +131,7 @@ const getErrorMessage = (inputId) => {
     return '';
 }
 
-// CHECK IF USER ALREADY EXIST IN DATABASE
-const isUserAlreadyExist = async (email, password) => {
-    const user = new User();
-    const isEmail = await user.isUserAlreadyExist(email, password, API_URL);
-    return isEmail;
-}
-
+// Login a particular user
 const loginUser = async (formData) => {
     const user = new User();
     let userStatus = await user.loginUser(formData, API_URL);
@@ -145,10 +139,11 @@ const loginUser = async (formData) => {
 }
 
 /**
-   onSubmitForm : Function used to validate signup data on submit.
+   onSubmitRegisterForm : Function used to validate signup data on submit.
  */
-const onSubmitForm = (e, inputFields, errorSpans) => {
+const onSubmitRegisterForm = (e, inputFields, errorSpans) => {
     e.preventDefault();
+
     errorSpans.forEach((errorSpan, index) => {
         let isPasswordMatch = false;
         let isEmailValid = false;
@@ -158,6 +153,7 @@ const onSubmitForm = (e, inputFields, errorSpans) => {
             validateData(inputField, errorSpan, getRegex(inputField.id), getErrorMessage(inputField.id));
         }
     })
+
     const isValid = Array.from(errorSpans).every((errorSpan) => {
         if (errorSpan.classList.contains('error')) {
             return false;
@@ -179,6 +175,7 @@ const onSubmitLoginForm = async (e, inputFields, errorSpans) => {
     const formData = new FormData(e.target);
     const userStatus = await loginUser(formData);
     e.preventDefault();
+
     errorSpans.forEach((errorSpan, index) => {
         let isPasswordMatch = false;
         let isEmailValid = false;
@@ -188,6 +185,7 @@ const onSubmitLoginForm = async (e, inputFields, errorSpans) => {
             validateData(inputField, errorSpan, getRegex(inputField.id), getErrorMessage(inputField.id));
         }
     })
+
     if (userStatus.error) {
         if (userStatus.errorType === 'login_email_error') {
             const errorSpan = email.parentElement.nextElementSibling;
@@ -197,7 +195,7 @@ const onSubmitLoginForm = async (e, inputFields, errorSpans) => {
             validateData(password, errorSpan, '', getErrorMessage(userStatus.errorType));
         }
     }
-    // isEmailValid = isUserAlreadyExist(email, password);
+
     const isValid = Array.from(errorSpans).every((errorSpan) => {
         if (errorSpan.classList.contains('error')) {
             return false;
@@ -222,8 +220,9 @@ const onSubmitLoginForm = async (e, inputFields, errorSpans) => {
         }).showToast();
     }
 
-    return (isValid && userStatus.is_logged_in);
+    return isValid && userStatus;
 }
+
 /**
    navigate : Function used to navigate to thank you page on form submit.
 */
@@ -237,7 +236,23 @@ const navigate = (navigateTo) => {
 const submitFormData = async (navigateTo, formData, isNavigating) => {
     const user = new User();
     let userData = await user.createUser(formData, API_URL);
-    if (userData.affectedRows && isNavigating) { navigate(navigateTo); }
+    if (userData.affectedRows && isNavigating) {
+        Toastify({
+            text: "user registered successfully",
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "#56b43a",
+            },
+        }).showToast();
+        setTimeout(() => {
+            navigate(navigateTo);
+        }, 3000);
+    }
 };
 
 /**
@@ -251,7 +266,7 @@ const handleSubmit = (e, inputFields, errorSpans) => {
     let isFormValidated = false;
     const isNavigating = true;
     if (formData) {
-        if (onSubmitForm(e, inputFields, errorSpans)) {
+        if (onSubmitRegisterForm(e, inputFields, errorSpans)) {
             isFormValidated = true;
         }
     } else {
@@ -274,10 +289,13 @@ const handleLogin = (e, inputFields, errorSpans) => {
     let isFormValidated = false;
     const isNavigating = true;
     if (formData) {
-        onSubmitLoginForm(e, inputFields, errorSpans).then((resolve, reject) => {
-            setTimeout(() => {
-                navigate(navigateTo);
-            }, 1000);
+        const onSubmit = onSubmitLoginForm(e, inputFields, errorSpans);
+        onSubmit.then((data) => {
+            if (data) {
+                setTimeout(() => {
+                    navigate(navigateTo);
+                }, 3000);
+            }
         }).catch((err) => {
             console.error(err);
         });
@@ -302,10 +320,7 @@ if (form.id === 'login-form') {
 /*
     User : Class used to contain all user data and methods
     sendResponse : Utility method - to send a formatted response to server
-    getUser : fetch user by id
-    isUserAlreadyExist : check wheather user already exist in the database or not
     createUser : to create and store user data into database
-    updateUser : to update and store user data into database
 
 */
 class User {
@@ -333,30 +348,6 @@ class User {
         return (error);
     }
 
-    async getUser(id, apiUrl) {
-        const userData = fetch(`${apiUrl}/user/${id}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        });
-        const response = await userData.json();
-        this.sendResponse(userData, response);
-    }
-
-    async isUserAlreadyExist(email, password, apiUrl) {
-        const userData = await fetch(`${apiUrl}/user/${email}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        });
-        const response = await userData.json();
-        if (response.data[0].email === email) {
-            const validPassword = (cyrb53(password).toString() === response.data[0].password);
-            if (validPassword && true) {
-                return (isUpdated && true);
-            };
-        }
-        return false;
-    }
-
     async createUser(formData, apiUrl) {
         formData.append('is_logged_in', false);
         const fetchResult = await fetch(`${apiUrl}/user`, {
@@ -376,6 +367,19 @@ class User {
         }).catch((err) => console.log(err));
         const response = await fetchResult.json();
         if (response.login === 'yes') {
+            formData.append('is_logged_in', true);
+            const loginData = await fetch(`${apiUrl}/login_status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(formData).toString(),
+            }).catch((err) => console.log(err));
+            const loggedInUser = await loginData.json();
+            response.data.is_logged_in = true;
+            return this.sendResponse(fetchResult, response);
+        } else if (response.error == true) {
+            return response;
+        } else {
+            formData.append('is_logged_in', false);
             const loginData = await fetch(`${apiUrl}/login_status`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -383,18 +387,6 @@ class User {
             }).catch((err) => console.log(err));
             const loggedInUser = await loginData.json();
             return this.sendResponse(fetchResult, response);
-        } else if (response.error == true) {
-            return response;
         }
-    }
-
-    async updateUser(id, apiUrl, data) {
-        const fetchResult = await fetch(`${apiUrl}/user`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: { id: id, user: new URLSearchParams(data).toString() }.toString(),
-        }).catch((err) => err);
-        const response = await fetchResult.json();
-        return this.sendResponse(fetchResult, response);
     }
 }

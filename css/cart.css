@@ -209,3 +209,14 @@
  .d-none {
      display: none;
  }
+
+ /* media queries */
+ @media(max-width: 1280px) {
+     .cart-body {
+         max-height: 295px;
+     }
+
+     .inner-cart {
+         min-height: 435px;
+     }
+ }

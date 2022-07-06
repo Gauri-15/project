@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 80px;
+    padding: 20px 0;
 }
 
 #header .wrapper>a {
@@ -64,7 +64,7 @@
     cursor: pointer;
 }
 
-#user_name {
+#user_data {
     position: absolute;
     right: 20%;
     top: 55px;
@@ -150,5 +150,18 @@
     #lg-bag {
         display: none;
         cursor: pointer;
+    }
+}
+
+/* media queries */
+@media(max-width: 1280px) {
+    #header .auth {
+        top: 95px;
+    }
+
+    #user_data {
+        right: 10%;
+        top: 42px;
+        font-size: 15px;
     }
 }

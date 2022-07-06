@@ -1,4 +1,4 @@
-// init functions
+// selecting dom elements
 const close = document.querySelector('.close');
 const bar = document.getElementById('bar');
 const nav = document.getElementById('navbar');
@@ -6,7 +6,7 @@ const html = document.querySelector('html');
 const body = document.querySelector('body');
 const login_link = document.querySelector('#login_link');
 const logout_link = document.querySelector('#logout_link');
-const user_name_element = document.querySelector('#user_name');
+const user_name_element = document.querySelector('#user_data');
 const user_email_element = document.querySelector('#user_email');
 const authContainer = document.querySelector('.auth');
 const cardContainer = document.querySelector('.pro-container');
@@ -22,8 +22,10 @@ const checkout = document.querySelector('.checkout');
 const totalPriceInCheckout = document.querySelector('.checkout .total-price');
 const totalCartQuantity = document.querySelectorAll('.cart-quantity');
 
+// display products card on the home and shop page
 const displayProducts = (container, products) => {
 
+    // calculate and display stars/rating given to a product
     const getStarsMarkup = (totalStars, productRating) => {
         const starMarkup = [];
         for (let i = 0; i < productRating; i++) {
@@ -37,6 +39,7 @@ const displayProducts = (container, products) => {
         return starMarkup.join('');
     }
 
+    //generate and display a product card structure
     const productMarkup = products.map((product) => {
         return `<div id=${product.id} class="pro">
             <img src="${product.image}" alt="">
@@ -57,6 +60,7 @@ const displayProducts = (container, products) => {
     container.innerHTML = productMarkup;
 }
 
+// fetch products list from database
 const fetchProducts = (cardContainer) => {
     fetch(`${API_URL}/products`)
         .then(res => res.json())
@@ -68,6 +72,7 @@ const fetchProducts = (cardContainer) => {
         });
 }
 
+// display product details on individual product detail page
 const displayProductDetails = (proImage, proDetails, result) => {
     if (proImage) {
         const mainImage = document.getElementById("MainImg");
@@ -85,6 +90,7 @@ const displayProductDetails = (proImage, proDetails, result) => {
     }
 }
 
+// fetch am individual product detail by id from database
 const fetchProductById = (product_id, singleProImage, singleProDetails) => {
     fetch(`${API_URL}/product/${product_id}`)
         .then(res => res.json())
@@ -96,8 +102,10 @@ const fetchProductById = (product_id, singleProImage, singleProDetails) => {
         });
 }
 
+
 // add to cart and display cart functionality
 
+// calculate total cart items
 const getTotal = (data, factor) => {
     return data.reduce((acc, cur) => {
         let total = parseInt(cur[factor]);
@@ -106,6 +114,7 @@ const getTotal = (data, factor) => {
     }, 0);
 }
 
+// display and generate structure of cart items list
 const displayCartItems = () => {
     const data = JSON.parse(localStorage.getItem('cartData'));
     const cartBody = document.querySelector('.cart-body');
@@ -138,6 +147,7 @@ const displayCartItems = () => {
     cartBody.innerHTML = cartBodyData;
 };
 
+// display and generate structure of individual cart item
 const getCartItemMarkup = (cartItem) => {
     return `
             <li class="cart-item">
@@ -164,6 +174,7 @@ const getCartItemMarkup = (cartItem) => {
         `;
 }
 
+//  onload init functionalities
 const onload = () => {
     window.onload = () => {
         close.classList.add('hide');
@@ -196,11 +207,24 @@ const onload = () => {
 
 onload();
 
-// auth redirection 
+// auth redirection logic
 logout_link.addEventListener('click', (e) => {
     user_name_element.classList.add('d-none');
     login_link.classList.remove('d-none');
+    let formData = {
+        is_logged_in: false,
+        email: JSON.parse(sessionStorage.getItem('user_data')).email,
+    }
+    // update login status in the database after logout
+    fetch(`${API_URL}/login_status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString(),
+    }).then((data) => console.log(data.json())).catch((err) => console.log(err));
     sessionStorage.clear();
+    setTimeout(() => {
+        navigate('index');
+    }, 500);
 })
 
 // active navigation slide menu logic
@@ -221,7 +245,7 @@ if (close) {
     })
 }
 
-// active cart toggle menu
+// active cart toggle menu logic
 if (shoppingIcon) {
     shoppingIcon.addEventListener('click', () => {
         cart.classList.toggle('d-none');
@@ -238,7 +262,6 @@ if (cartClose) {
         cart.classList.remove('slide-left');
     })
 }
-
 if (backdrop) {
     backdrop.addEventListener('click', () => {
         cart.classList.toggle('d-none');
@@ -251,7 +274,6 @@ if (backdrop) {
 // change header background color on scroll
 let className = "inverted";
 let scrollTrigger = 60;
-
 window.onscroll = function () {
     // We add pageYOffset for compatibility with IE.
     if (window.scrollY >= scrollTrigger || window.pageYOffset >= scrollTrigger) {
@@ -267,7 +289,7 @@ setTimeout(() => {
     let mainImage = document.getElementById("MainImg");
     let smallImages = Array.from(document.getElementsByClassName("small-img"));
 
-    // card to card details page navigation logic
+    // individual card to card details page navigation logic
     cards.forEach((card) => {
         card.addEventListener('click', (e) => {
             window.location.href = `/product.html?id=${e.target.closest('.pro').id}`;
@@ -282,9 +304,8 @@ setTimeout(() => {
     })
 }, 5000);
 
-// cart functionality
+// add to cart functionality
 const addToCartBtn = document.querySelector('.add-to-cart');
-
 if (addToCartBtn) {
     addToCartBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -342,8 +363,31 @@ if (checkout) {
             backdrop.classList.toggle('d-none');
             html.classList.remove('overflow-hide');
             cart.classList.remove('slide-left');
+            const cartData = localStorage.getItem('cartData');
+            const { id: userId } = JSON.parse(sessionStorage.getItem('user_data'));
+            let userCheckoutData = JSON.stringify({
+                data: {
+                    user_id: userId,
+                    product_list: cartData,
+                    total_price: totalPriceInCheckout.innerText,
+                }
+            });
+            // JSON.stringify(userCheckoutData.data);
+            fetch(`${API_URL}/user_product`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: userCheckoutData,
+            }).then(res => res.json())
+                .then((result) => {
+                    console.log(result);
+                    return result;
+                }).catch((err) => {
+                    console.error('something went wrong', err);
+                });
             // localStorage.clear();
-            const cartData = JSON.parse(localStorage.getItem('cartData'));
             Toastify({
                 text: "Your Order has been placed successfully",
                 duration: 3000,
@@ -358,7 +402,7 @@ if (checkout) {
             }).showToast();
             setTimeout(() => {
                 navigate('index');
-            }, 1000);
+            }, 3000);
         } else {
             Toastify({
                 text: "Please Login to proceed !",
@@ -374,7 +418,7 @@ if (checkout) {
             }).showToast();
             setTimeout(() => {
                 navigate('login');
-            }, 1000);
+            }, 2000);
         }
     })
 }
