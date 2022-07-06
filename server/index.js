@@ -126,13 +126,12 @@ app.get('/product/:id', function (req, res) {
 });
 
 // Checkout Api
-app.put('/user_product', function (req, res) {
-    console.log(req.body)
-    let data = req.body.data;
-    if (!data) {
-        return res.status(400).send({ error: data, message: 'Please provide user and user_id' });
+app.post('/user_product', function (req, res) {
+    let { user_id, product_list, total_price } = req.body.data;
+    if (!req.body.data) {
+        return res.status(400).send({ error: { user_id, product_list, total_price }, message: 'Please provide user and user_id' });
     }
-    dbConn.query("INSERT INTO user_products SET ? ", { ...data }, function (error, results, fields) {
+    dbConn.query(`INSERT INTO user_products (user_id, product_list, total_price) VALUES (?,?,?)`, [user_id, product_list, total_price], function (error, results, fields) {
         if (error) return res.send({ error_code: error.code, error_message: error.message, error_query: error.sql });
         return res.send({ error: false, data: results, message: 'user has been updated successfully.' });
     });

@@ -220,7 +220,7 @@ logout_link.addEventListener('click', (e) => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(formData).toString(),
-    }).then((data) => console.log(data.json())).catch((err) => console.log(err));
+    }).then((data) => data).catch((err) => console.log(err));
     sessionStorage.clear();
     setTimeout(() => {
         navigate('index');
@@ -356,6 +356,15 @@ const navigate = (navigateTo) => {
 };
 
 // checkout functionality 
+const getCartDataIds = (cartData) => {
+    const cartIds = [];
+    cartData.forEach((data) => {
+        cartIds.push(data.id);
+    })
+
+    return cartIds.join(',');
+}
+
 if (checkout) {
     checkout.addEventListener('click', (e) => {
         if (sessionStorage.length > 0) {
@@ -363,46 +372,45 @@ if (checkout) {
             backdrop.classList.toggle('d-none');
             html.classList.remove('overflow-hide');
             cart.classList.remove('slide-left');
-            const cartData = localStorage.getItem('cartData');
+            const cartData = JSON.parse(localStorage.getItem('cartData'));
+            const cartDataIds = getCartDataIds(cartData);
             const { id: userId } = JSON.parse(sessionStorage.getItem('user_data'));
-            let userCheckoutData = JSON.stringify({
-                data: {
-                    user_id: userId,
-                    product_list: cartData,
-                    total_price: totalPriceInCheckout.innerText,
-                }
-            });
-            // JSON.stringify(userCheckoutData.data);
+            let userCheckoutData = {
+                user_id: userId,
+                product_list: cartDataIds,
+                total_price: totalPriceInCheckout.innerText,
+            };
             fetch(`${API_URL}/user_product`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: userCheckoutData,
+                body: JSON.stringify({ data: userCheckoutData }),
             }).then(res => res.json())
                 .then((result) => {
-                    console.log(result);
-                    return result;
+                    if (result.data.affectedRows) {
+                        localStorage.clear();
+                        Toastify({
+                            text: "Your Order has been placed successfully",
+                            duration: 3000,
+                            newWindow: true,
+                            close: true,
+                            gravity: "top", // `top` or `bottom`
+                            position: "center", // `left`, `center` or `right`
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            style: {
+                                background: "#56b43a",
+                            },
+                        }).showToast();
+                        setTimeout(() => {
+                            navigate('index');
+                        }, 3000);
+                        return result;
+                    }
                 }).catch((err) => {
                     console.error('something went wrong', err);
                 });
-            // localStorage.clear();
-            Toastify({
-                text: "Your Order has been placed successfully",
-                duration: 3000,
-                newWindow: true,
-                close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "center", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
-                style: {
-                    background: "#56b43a",
-                },
-            }).showToast();
-            setTimeout(() => {
-                navigate('index');
-            }, 3000);
         } else {
             Toastify({
                 text: "Please Login to proceed !",
