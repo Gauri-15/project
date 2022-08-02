@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const express = require('express');;
+const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('./config');
 const cors = require('cors');
@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+// function to hash password
 const cyrb53 = function (str, seed = 0) {
     let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
     for (let i = 0, ch; i < str.length; i++) {
@@ -23,9 +24,11 @@ const cyrb53 = function (str, seed = 0) {
     return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 };
 
+// mysql database connection
 const dbConn = mysql.createConnection(config.db);
 dbConn.connect();
 
+// demo API
 app.get('/', function (req, res) {
     return res.send({ error: true, message: 'hello' })
 });
@@ -38,7 +41,7 @@ app.get('/users', function (req, res) {
     });
 });
 
-// Retrieve user with param 
+// Retrieve user with email 
 app.get('/user/:email', function (req, res) {
     let email = req.params.email;
     if (!email) {
@@ -116,7 +119,7 @@ app.get('/products', function (req, res) {
     });
 });
 
-// retrieve products on basis of ID
+// retrieve products by ID
 app.get('/product/:id', function (req, res) {
     const id = req.params.id;
     dbConn.query(`SELECT * FROM products WHERE id =${id}`, function (error, results, fields) {
@@ -126,6 +129,7 @@ app.get('/product/:id', function (req, res) {
 });
 
 // Checkout Api
+// add user bought products info in database
 app.post('/user_product', function (req, res) {
     let { user_id, product_list, total_price } = req.body.data;
     if (!req.body.data) {

@@ -28,7 +28,7 @@
             <a href="index.html"><img src="./img/logo.png" class="logo" alt=""></a>
             <div>
                 <ul id="navbar">
-                    <li><a class="active" href="index.html">Home</a></li>
+                    <li><a href="index.html">Home</a></li>
                     <li><a href="./shop.html">Shop</a></li>
                     <li><a href="./contact.html">Contact</a></li>
                     <li id="lg-bag"><a href="./cart.html"></a>
@@ -44,6 +44,7 @@
                             <div>
                                 <h2 class="d-inline">My Cart</h2>
                                 <span>(<span class="cart-quantity">0</span> item)</span>
+                                <button id="clear-cart">clear cart</button>
                             </div>
                             <i class="fa-solid fas fa-times"></i>
                         </div>
@@ -63,8 +64,8 @@
                     </div>
                 </div>
             </div>
-            <div id="user_data">
-                <p>Hi <span id="user_email"></span></p>
+            <div id="user_data" >
+                <p class="anim-typewriter">Hi <span id="user_email"></span></p>
             </div>
             <div class="auth">
                 <ul>
@@ -75,7 +76,7 @@
             <div class="mobile">
                 <i class="close fas fa-times"></i>
                 <a href="./cart.html"><i class="fa-solid fa-bag-shopping"></i></a>
-                <i id="bar" class="fas fa-outdent"></i>
+
             </div>
             <div class="backdrop d-none" id="backdrop"></div>
         </div>
@@ -237,6 +238,7 @@
             </div>
         </div>
     </footer>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 

@@ -21,7 +21,7 @@
             <a href="index.html"><img src="./img/logo.png" class="logo" alt=""></a>
             <div>
                 <ul id="navbar">
-                    <li><a class="active" href="index.html">Home</a></li>
+                    <li><a href="index.html">Home</a></li>
                     <li><a href="./shop.html">Shop</a></li>
                     <li><a href="./contact.html">Contact</a></li>
                     <li id="lg-bag"><a href="./cart.html"></a>
@@ -31,19 +31,20 @@
                 </ul>
                 <div class="cart d-none" id="cart">
                     <div class="inner-cart">
-    
+
                         <!-- Cart Header -->
                         <div class="cart-header" id="cart-header">
                             <div>
                                 <h2 class="d-inline">My Cart</h2>
                                 <span>(<span class="cart-quantity">0</span> item)</span>
+                                <button id="clear-cart">clear cart</button>
                             </div>
                             <i class="fa-solid fas fa-times"></i>
                         </div>
-    
+
                         <!-- Cart Body -->
                         <ul class="cart-body" id="cart-body"></ul>
-    
+
                         <!-- Cart Footer -->
                         <div class="cart-footer" id="cart-footer">
                             <p>Promo Code can be applied on payment page</p>
@@ -68,7 +69,7 @@
             <div class="mobile">
                 <i class="close fas fa-times"></i>
                 <a href="./cart.html"><i class="fa-solid fa-bag-shopping"></i></a>
-                <i id="bar" class="fas fa-outdent"></i>
+
             </div>
             <div class="backdrop d-none" id="backdrop"></div>
         </div>
@@ -156,6 +157,7 @@
         </div>
     </footer>
 </body>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
 <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="./js/index.js"></script>

@@ -118,7 +118,14 @@
  .cart-header>div {
      display: flex;
      justify-content: space-between;
-     width: 45%;
+     width: 75%;
+ }
+
+ .cart-header button {
+     font-size: 12px;
+     font-family: fantasy;
+     text-transform: capitalize;
+     letter-spacing: 1px;
  }
 
  .cart-img-container {

@@ -205,7 +205,7 @@ const onSubmitLoginForm = async (e, inputFields, errorSpans) => {
     })
 
     if (isValid && userStatus.is_logged_in) {
-        sessionStorage.setItem('user_data', JSON.stringify({ id: userStatus.id, email: userStatus.email }));
+        sessionStorage.setItem('user_data', JSON.stringify({ id: userStatus.id, email: userStatus.email, email: userStatus.email }));
         Toastify({
             text: "user logged in successfully",
             duration: 3000,

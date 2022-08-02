@@ -12,6 +12,7 @@ const authContainer = document.querySelector('.auth');
 const cardContainer = document.querySelector('.pro-container');
 const singleProImage = document.querySelector('.single-pro-image');
 const singleProDetails = document.querySelector('.single-pro-details');
+const clearCartBtn = document.querySelector('#clear-cart');
 const ASSETS_URL = 'http://localhost:4000';
 const API_URL = "http://localhost:0315";
 const cart = document.querySelector('.cart');
@@ -21,6 +22,157 @@ const cartClose = document.querySelector('.cart .fa-times');
 const checkout = document.querySelector('.checkout');
 const totalPriceInCheckout = document.querySelector('.checkout .total-price');
 const totalCartQuantity = document.querySelectorAll('.cart-quantity');
+const newsLetterForm = document.querySelector('#newsletter form');
+const addToCartBtn = document.querySelector('.add-to-cart');
+
+/* SERVER API CALLS */
+
+// fetch products list from database
+const fetchProducts = (cardContainer) => {
+    fetch(`${API_URL}/products`)
+        .then(res => res.json())
+        .then((result) => {
+            displayProducts(cardContainer, result.data);
+            return result;
+        }).catch((err) => {
+            console.error('something went wrong', err);
+        });
+}
+
+// fetch an individual product detail by id from database
+const fetchProductById = (product_id, singleProImage, singleProDetails) => {
+    fetch(`${API_URL}/product/${product_id}`)
+        .then(res => res.json())
+        .then((result) => {
+            displayProductDetails(singleProImage, singleProDetails, result.data[0]);
+            return result;
+        }).catch((err) => {
+            console.error('something went wrong', err);
+        });
+}
+
+// add product details bought by an user into database
+const addUserProduct = (userCheckoutData) => {
+    fetch(`${API_URL}/user_product`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: userCheckoutData }),
+    }).then(res => res.json())
+        .then((result) => {
+            if (result.data.affectedRows) {
+                const user = JSON.parse(sessionStorage.getItem('user_data'));
+                Email.send({
+                    Host: "smtp.elasticemail.com",
+                    Username: 'ashrirao03@gmail.com',
+                    Password: "8C704D3946B800855BB7567BBB70AB0987A7",
+                    Port: 2525,
+                    To: 'gaurishrirao2001@gmail.com',
+                    From: "ashrirao03@gmail.com",
+                    Subject: "E-Shop Order Placed Successfully",
+                    Body: `Hi ${user.name} Your Order has been placed successfully !`
+                }).then((message) => {
+                    if (message === 'OK') {
+                        Toastify({
+                            text: "Your Order has been placed successfully",
+                            duration: 3000,
+                            newWindow: true,
+                            close: true,
+                            gravity: "top", // `top` or `bottom`
+                            position: "center", // `left`, `center` or `right`
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            style: {
+                                background: "#56b43a",
+                            },
+                        }).showToast();
+                    } else {
+                        Toastify({
+                            text: "Your Order has been cancelled due to some network issues",
+                            duration: 3000,
+                            newWindow: true,
+                            close: true,
+                            gravity: "top", // `top` or `bottom`
+                            position: "center", // `left`, `center` or `right`
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            style: {
+                                background: "#d42525",
+                            },
+                        }).showToast();
+                    }
+                });
+                localStorage.clear();
+                setTimeout(() => {
+                    navigate('index');
+                }, 3000);
+                return result;
+            }
+        }).catch((err) => {
+            console.error('something went wrong', err);
+        });
+}
+
+// update login status in the database after logout
+const updateLoginStatus = (formData) => {
+    fetch(`${API_URL}/login_status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString(),
+    }).then((data) => data).catch((err) => console.log(err));
+}
+
+/* UTILITY/COMMON FUNCTIONS LOGIC */
+
+// calculate total cart items
+const getTotal = (data, factor) => {
+    return data.reduce((acc, cur) => {
+        let total = parseInt(cur[factor]);
+        total = total + acc;
+        return total;
+    }, 0);
+}
+
+// Function used to navigate to thank you page on form submit.
+const navigate = (navigateTo) => {
+    window.location.href = `${window.location.origin}/${navigateTo}.html`;
+};
+
+// fetch cart id's of products inside cart
+const getCartDataIds = (cartData) => {
+    const cartIds = [];
+    cartData.forEach((data) => {
+        cartIds.push(data.id);
+    })
+
+    return cartIds.join(',');
+}
+
+/*
+  showActiveMenu: Function for showing active menu on Blogs Page
+*/
+const sanitizeUrl = (url) => {
+    const sanitize = url.replace(/^http:\/\//, '') // remove the leading http:// (temporarily)
+        .replace(/\/+/g, '/') // replace consecutive slashes with a single slash
+        .replace(/\/+$/, ''); // remove trailing slashes
+    const sanitizedTargetUrl = `http://${sanitize}`;
+    return sanitizedTargetUrl;
+};
+
+const showActiveMenu = (csrLinks) => {
+    var current = location.pathname.split('/')[1];
+    if (current === "") return;
+    for (var i = 0, len = csrLinks.length; i < len; i++) {
+        if (csrLinks[i].getAttribute("href").indexOf(current) !== -1) {
+            csrLinks[i].classList.add("active");
+        } else {
+            csrLinks[i].classList.remove("active");
+        }
+    }
+};
+
+
+/* DISPLAY UI LOGIC */
 
 // display products card on the home and shop page
 const displayProducts = (container, products) => {
@@ -60,18 +212,6 @@ const displayProducts = (container, products) => {
     container.innerHTML = productMarkup;
 }
 
-// fetch products list from database
-const fetchProducts = (cardContainer) => {
-    fetch(`${API_URL}/products`)
-        .then(res => res.json())
-        .then((result) => {
-            displayProducts(cardContainer, result.data);
-            return result;
-        }).catch((err) => {
-            console.error('something went wrong', err);
-        });
-}
-
 // display product details on individual product detail page
 const displayProductDetails = (proImage, proDetails, result) => {
     if (proImage) {
@@ -88,30 +228,6 @@ const displayProductDetails = (proImage, proDetails, result) => {
         productBrand.innerText = result.brand_name;
         productPrice.innerText = result.price;
     }
-}
-
-// fetch am individual product detail by id from database
-const fetchProductById = (product_id, singleProImage, singleProDetails) => {
-    fetch(`${API_URL}/product/${product_id}`)
-        .then(res => res.json())
-        .then((result) => {
-            displayProductDetails(singleProImage, singleProDetails, result.data[0]);
-            return result;
-        }).catch((err) => {
-            console.error('something went wrong', err);
-        });
-}
-
-
-// add to cart and display cart functionality
-
-// calculate total cart items
-const getTotal = (data, factor) => {
-    return data.reduce((acc, cur) => {
-        let total = parseInt(cur[factor]);
-        total = total + acc;
-        return total;
-    }, 0);
 }
 
 // display and generate structure of cart items list
@@ -174,12 +290,14 @@ const getCartItemMarkup = (cartItem) => {
         `;
 }
 
+/* PAGE ONLOAD LOGIC */
+
 //  onload init functionalities
 const onload = () => {
     window.onload = () => {
         close.classList.add('hide');
-        authContainer.classList.add('hide');
         if (body.classList.contains('home-page') || body.classList.contains('shop-page') || body.classList.contains('product-page')) {
+            showActiveMenu(document.querySelectorAll('#navbar li a'));
             fetchProducts(cardContainer);
         }
         if (body.classList.contains('product-page')) {
@@ -194,7 +312,7 @@ const onload = () => {
             const user = JSON.parse(sessionStorage.getItem('user_data'));
             if (user) {
                 user_name_element.classList.remove('d-none');
-                user_email_element.innerText = user.email;
+                user_email_element.innerText = user.name;
                 login_link.classList.add('d-none');
             }
         } else {
@@ -205,7 +323,8 @@ const onload = () => {
     window.onload();
 }
 
-onload();
+
+/* EVENT LISTENERS AND HANDLERS LOGIC */
 
 // auth redirection logic
 logout_link.addEventListener('click', (e) => {
@@ -213,14 +332,9 @@ logout_link.addEventListener('click', (e) => {
     login_link.classList.remove('d-none');
     let formData = {
         is_logged_in: false,
-        email: JSON.parse(sessionStorage.getItem('user_data')).email,
+        name: JSON.parse(sessionStorage.getItem('user_data')).name,
     }
-    // update login status in the database after logout
-    fetch(`${API_URL}/login_status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData).toString(),
-    }).then((data) => data).catch((err) => console.log(err));
+    updateLoginStatus(formData);
     sessionStorage.clear();
     setTimeout(() => {
         navigate('index');
@@ -228,22 +342,22 @@ logout_link.addEventListener('click', (e) => {
 })
 
 // active navigation slide menu logic
-if (bar) {
-    bar.addEventListener('click', () => {
-        bar.classList.add('hide');
-        close.classList.remove('hide');
-        authContainer.classList.remove('hide');
-        authContainer.classList.add('slide-left');
-    })
-}
-if (close) {
-    close.addEventListener('click', () => {
-        bar.classList.remove('hide');
-        close.classList.add('hide');
-        authContainer.classList.remove('slide-left');
-        authContainer.classList.add('hide');
-    })
-}
+// if (bar) {
+//     bar.addEventListener('click', () => {
+//         bar.classList.add('hide');
+//         close.classList.remove('hide');
+//         authContainer.classList.remove('hide');
+//         authContainer.classList.add('slide-left');
+//     })
+// }
+// if (close) {
+//     close.addEventListener('click', () => {
+//         bar.classList.remove('hide');
+//         close.classList.add('hide');
+//         authContainer.classList.remove('slide-left');
+//         authContainer.classList.add('hide');
+//     })
+// }
 
 // active cart toggle menu logic
 if (shoppingIcon) {
@@ -277,17 +391,16 @@ let scrollTrigger = 60;
 window.onscroll = function () {
     // We add pageYOffset for compatibility with IE.
     if (window.scrollY >= scrollTrigger || window.pageYOffset >= scrollTrigger) {
-        document.getElementsByTagName("header")[0].classList.add(className);
+        document.querySelector("#header").classList.add(className);
     } else {
-        document.getElementsByTagName("header")[0].classList.remove(className);
+        document.querySelector("#header").classList.remove(className);
     }
 };
 
-
 setTimeout(() => {
     const cards = document.querySelectorAll('.pro');
-    let mainImage = document.getElementById("MainImg");
-    let smallImages = Array.from(document.getElementsByClassName("small-img"));
+    let mainImage = document.querySelector("#MainImg");
+    let smallImages = Array.from(document.querySelectorAll(".small-img"));
 
     // individual card to card details page navigation logic
     cards.forEach((card) => {
@@ -305,7 +418,6 @@ setTimeout(() => {
 }, 5000);
 
 // add to cart functionality
-const addToCartBtn = document.querySelector('.add-to-cart');
 if (addToCartBtn) {
     addToCartBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -348,23 +460,14 @@ if (addToCartBtn) {
     })
 };
 
-/**
-   navigate : Function used to navigate to thank you page on form submit.
-*/
-const navigate = (navigateTo) => {
-    window.location.href = `${window.location.origin}/${navigateTo}.html`;
-};
-
-// checkout functionality 
-const getCartDataIds = (cartData) => {
-    const cartIds = [];
-    cartData.forEach((data) => {
-        cartIds.push(data.id);
+if (clearCartBtn) {
+    clearCartBtn.addEventListener('click', (e) => {
+        localStorage.clear();
+        displayCartItems();
     })
-
-    return cartIds.join(',');
 }
 
+// checkout functionality
 if (checkout) {
     checkout.addEventListener('click', (e) => {
         if (sessionStorage.length > 0) {
@@ -373,44 +476,14 @@ if (checkout) {
             html.classList.remove('overflow-hide');
             cart.classList.remove('slide-left');
             const cartData = JSON.parse(localStorage.getItem('cartData'));
-            const cartDataIds = getCartDataIds(cartData);
+            const cartDataIds = Array.isArray(cartData) ? getCartDataIds(cartData) : cartData.id;
             const { id: userId } = JSON.parse(sessionStorage.getItem('user_data'));
             let userCheckoutData = {
                 user_id: userId,
                 product_list: cartDataIds,
                 total_price: totalPriceInCheckout.innerText,
             };
-            fetch(`${API_URL}/user_product`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ data: userCheckoutData }),
-            }).then(res => res.json())
-                .then((result) => {
-                    if (result.data.affectedRows) {
-                        localStorage.clear();
-                        Toastify({
-                            text: "Your Order has been placed successfully",
-                            duration: 3000,
-                            newWindow: true,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "center", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "#56b43a",
-                            },
-                        }).showToast();
-                        setTimeout(() => {
-                            navigate('index');
-                        }, 3000);
-                        return result;
-                    }
-                }).catch((err) => {
-                    console.error('something went wrong', err);
-                });
+            addUserProduct(userCheckoutData);
         } else {
             Toastify({
                 text: "Please Login to proceed !",
@@ -430,3 +503,25 @@ if (checkout) {
         }
     })
 }
+
+// newsletter functionality
+if (newsLetterForm) {
+    newsLetterForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = e.target.children[0].value;
+        Toastify({
+            text: `${email} you have subscribe to our newsletter successfully !`,
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "green",
+            },
+        }).showToast();
+    })
+}
+
+onload();
