@@ -457,15 +457,16 @@ if (checkout) {
             backdrop.classList.toggle('d-none');
             html.classList.remove('overflow-hide');
             cart.classList.remove('slide-left');
-            const cartData = JSON.parse(localStorage.getItem('cartData'));
-            const cartDataIds = Array.isArray(cartData) ? getCartDataIds(cartData) : cartData.id;
-            const { id: userId } = JSON.parse(sessionStorage.getItem('user_data'));
-            let userCheckoutData = {
-                user_id: userId,
-                product_list: cartDataIds,
-                total_price: totalPriceInCheckout.innerText,
-            };
-            addUserProduct(userCheckoutData);
+            // const cartData = JSON.parse(localStorage.getItem('cartData'));
+            // const cartDataIds = Array.isArray(cartData) ? getCartDataIds(cartData) : cartData.id;
+            // const { id: userId } = JSON.parse(sessionStorage.getItem('user_data'));
+            // let userCheckoutData = {
+            //     user_id: userId,
+            //     product_list: cartDataIds,
+            //     total_price: totalPriceInCheckout.innerText,
+            // };
+            // addUserProduct(userCheckoutData);
+            navigate('payment');
         } else {
             Toastify({
                 text: "Please Login to proceed !",
@@ -485,6 +486,38 @@ if (checkout) {
         }
     })
 }
+
+const paymentTypes = document.querySelectorAll('.payment-type .type');
+
+paymentTypes.forEach((paymentType) => {
+    paymentType.addEventListener('click', (e) => {
+        if (e.target.closest('.type').classList.contains('selected')) {
+            e.target.closest('.type').classList.remove('selected');
+        } else {
+            const shippingInfo = document.querySelector('.shipping .title h4');
+            if (e.target.closest('.type').children[1].children[0].innerText.includes('CREDIT')) {
+                shippingInfo.innerText = 'credit card info';
+            } else {
+                shippingInfo.innerText = 'debit card info';
+            }
+            paymentTypes.forEach((type) => type.classList.remove('selected'));
+            e.target.closest('.type').classList.add('selected');
+        }
+    })
+})
+
+const billingForm = document.querySelector('#billing-form');
+billingForm.addEventListener('submit', () => {
+    const cartData = JSON.parse(localStorage.getItem('cartData'));
+    const cartDataIds = Array.isArray(cartData) ? getCartDataIds(cartData) : cartData.id;
+    const { id: userId } = JSON.parse(sessionStorage.getItem('user_data'));
+    let userCheckoutData = {
+        user_id: userId,
+        product_list: cartDataIds,
+        total_price: totalPriceInCheckout.innerText,
+    };
+    addUserProduct(userCheckoutData);
+})
 
 // newsletter functionality
 if (newsLetterForm) {
