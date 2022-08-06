@@ -1,0 +1,97 @@
+.contact-form {
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    margin: 50px auto 100px;
+    font-family: Calibri, Arial, sans-serif;
+    padding: 20px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+#page-header h2 {
+    font-size: 40px;
+}
+
+#page-header p {
+    font-size: 20px;
+}
+
+.contact-form label {
+    display: block;
+    margin: 5px 0;
+}
+
+.form-elements {
+    display: flex;
+}
+
+.contact-form h1 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.contact-form p {
+    font-size: 20px;
+}
+
+.contact-form h1,
+.contact-form p {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+/* single-line text, checkbox, and button */
+input,
+textarea {
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    padding: 10px 2%;
+    background-color: #fbfbfb;
+    border: solid 1px #CCC;
+    resize: vertical;
+}
+
+textarea {
+    min-height: 180px;
+}
+
+input[type=submit] {
+    background: lightcoral;
+    margin: 1em 0 0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: all .3s ease-out;
+}
+
+input:focus,
+input:hover,
+textarea:focus,
+textarea:hover {
+    background: lavenderBlush;
+}
+
+/* hover and focus states */
+input[type=submit]:hover,
+input[type=submit]:focus {
+    background: lightgreen;
+    outline: none;
+}
+
+@media screen and (min-width:600px) {
+
+    /*  make the form 2 columns */
+    form:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+
+    .column {
+        width: 50%;
+        padding: 1em;
+        float: left;
+    }
+}

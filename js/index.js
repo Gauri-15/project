@@ -69,7 +69,7 @@ const addUserProduct = (userCheckoutData) => {
                     Username: 'ashrirao03@gmail.com',
                     Password: "8C704D3946B800855BB7567BBB70AB0987A7",
                     Port: 2525,
-                    To: 'gaurishrirao2001@gmail.com',
+                    To: `${user.email}`,
                     From: "ashrirao03@gmail.com",
                     Subject: "E-Shop Order Placed Successfully",
                     Body: `Hi ${user.name} Your Order has been placed successfully !`
@@ -332,32 +332,14 @@ logout_link.addEventListener('click', (e) => {
     login_link.classList.remove('d-none');
     let formData = {
         is_logged_in: false,
-        name: JSON.parse(sessionStorage.getItem('user_data')).name,
+        email: JSON.parse(sessionStorage.getItem('user_data')).email,
     }
-    updateLoginStatus(formData);
+    updateLoginStatus(formData)
     sessionStorage.clear();
     setTimeout(() => {
         navigate('index');
     }, 500);
 })
-
-// active navigation slide menu logic
-// if (bar) {
-//     bar.addEventListener('click', () => {
-//         bar.classList.add('hide');
-//         close.classList.remove('hide');
-//         authContainer.classList.remove('hide');
-//         authContainer.classList.add('slide-left');
-//     })
-// }
-// if (close) {
-//     close.addEventListener('click', () => {
-//         bar.classList.remove('hide');
-//         close.classList.add('hide');
-//         authContainer.classList.remove('slide-left');
-//         authContainer.classList.add('hide');
-//     })
-// }
 
 // active cart toggle menu logic
 if (shoppingIcon) {
